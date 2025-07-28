@@ -1,26 +1,25 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
+import streamlit as st
 
-app = FastAPI()
+st.title("HR Employee Portal")
 
-templates = Jinja2Templates(directory="templates")
+# --- Get User by ID ---
+st.subheader("Get User by ID")
+user_id = st.text_input("Enter User ID")
+if st.button("Get User"):
+    st.write({"message": f"User ID received: {user_id}"})
 
-@app.get("/", response_class=HTMLResponse)
-def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+# --- Search Employee ---
+st.subheader("Search Employee")
+name = st.text_input("Enter Name")
+if st.button("Search"):
+    st.write({"message": f"Searching for: {name}"})
 
-@app.get("/users/{user_id}")
-def get_user(user_id: int):
-    return {"message": f"User ID received: {user_id}"}
-
-@app.get("/search")
-def search_name(name: str):
-    return {"message": f"Searching for: {name}"}
-
-@app.get("/users/{user_id}/details")
-def user_details(user_id: int, show_email: bool = False):
-    return {
-        "user_id": user_id,
+# --- Get User Details ---
+st.subheader("Get User Details")
+detail_user_id = st.text_input("User ID")
+show_email = st.checkbox("Show Email")
+if st.button("Get Details"):
+    st.write({
+        "user_id": detail_user_id,
         "show_email": show_email
-    }
+    })
