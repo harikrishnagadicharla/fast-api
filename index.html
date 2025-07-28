@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HR Employee Portal</title>
+</head>
+<body>
+    <h1>HR Employee Portal</h1>
+
+    <h2>Get User by ID</h2>
+    <form onsubmit="event.preventDefault(); fetchUserById();">
+        <input type="number" id="user_id" placeholder="Enter User ID">
+        <button>Get User</button>
+        <p id="userResult"></p>
+    </form>
+
+    <h2>Search Employee</h2>
+    <form onsubmit="event.preventDefault(); searchEmployee();">
+        <input type="text" id="name" placeholder="Enter Name">
+        <button>Search</button>
+        <p id="searchResult"></p>
+    </form>
+
+    <h2>Get User Details</h2>
+    <form onsubmit="event.preventDefault(); fetchUserDetails();">
+        <input type="number" id="detail_user_id" placeholder="User ID">
+        <label>
+            <input type="checkbox" id="show_email"> Show Email
+        </label>
+        <button>Get Details</button>
+        <p id="detailsResult"></p>
+    </form>
+
+    <script>
+        async function fetchUserById() {
+            const id = document.getElementById("user_id").value;
+            const res = await fetch(`/users/${id}`);
+            const data = await res.json();
+            document.getElementById("userResult").innerText = JSON.stringify(data);
+        }
+
+        async function searchEmployee() {
+            const name = document.getElementById("name").value;
+            const res = await fetch(`/search?name=${encodeURIComponent(name)}`);
+            const data = await res.json();
+            document.getElementById("searchResult").innerText = JSON.stringify(data);
+        }
+
+        async function fetchUserDetails() {
+            const id = document.getElementById("detail_user_id").value;
+            const showEmail = document.getElementById("show_email").checked;
+            const res = await fetch(`/users/${id}/details?show_email=${showEmail}`);
+            const data = await res.json();
+            document.getElementById("detailsResult").innerText = JSON.stringify(data);
+        }
+    </script>
+</body>
+</html>
